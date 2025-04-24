@@ -145,3 +145,78 @@ text-align: center;
   text-transform: uppercase;
   cursor: pointer;
 }
+/* Make it mobile-friendly */
+@media screen and (max-width: 768px) {
+  .container {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .input-items {
+    width: 100%;
+    flex-direction: column;
+    border-radius: 10px;
+  }
+
+  .input-container input {
+    padding: 15px;
+    font-size: 14px;
+  }
+
+  .search-icon {
+    margin: 10px auto;
+  }
+
+  .image img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .temprature, .country, .city {
+    font-size: 22px;
+  }
+
+  .latitude, .longitude {
+    font-size: 18px;
+  }
+
+  .cord {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .data-items {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .copy-right p {
+    font-size: 18px;
+  }
+
+  .copy-right p span {
+    font-size: 20px;
+  }
+}
+
+/* For medium screen (tablet-ish) */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    width: 85%;
+    padding: 20px;
+  }
+
+  .input-items {
+    width: 90%;
+  }
+
+  .image img {
+    width: 180px;
+    height: 180px;
+  }
+
+  .temprature, .country, .city {
+    font-size: 26px;
+  }
+}
