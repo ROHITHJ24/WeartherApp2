@@ -1,0 +1,147 @@
+html {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+h1{
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 30px;
+}
+body {
+  color: white;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+
+  background-image: linear-gradient(to bottom right, rgb(173, 19, 173), rgb(21, 21, 216));
+  padding:5px 25px;
+  border-radius: 8px;
+  width: 1000px;
+  /* height: 800px; */
+}
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.input-items {
+  width: 550px;
+  display: flex;
+  align-items: center;
+
+  border: solid 1px white;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.input-container input {
+  flex: 1;
+  outline: none;
+  border: none;
+  padding: 20px;
+  background: transparent;
+
+
+}
+
+input::placeholder {
+  color: white;
+  font-size: 15px;
+}
+
+.search-icon {
+  margin-top: 4px;
+  cursor: pointer;
+  padding: 0px 6px;
+  margin-right: 8px;
+}
+.image{
+  text-align: center;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+.image img{
+ width: 200px;
+ height: 200px;
+}
+
+.temprature , .country,.city {
+  font-size: 30px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.latitude ,.longitude{
+  font-size: 22px;
+}
+.temprature{
+  font-weight: 600;
+}
+
+.city{
+  color: orange;
+  font-weight: 300;
+}
+
+.country{
+  font-weight: 500px;
+color: darkgray;
+
+}
+
+.cord{
+  display: flex;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+
+}
+
+.cord div{
+  display: flex;
+  flex-direction: column;
+
+}
+
+.cord div span:nth-child(2){
+  font-size: 20px;
+  font-weight: 500;
+}
+.data-items{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.humitity-and-wind{
+text-align: center; 
+}
+
+.icon{
+  height: 30px;
+  width: 30px;
+}
+
+.copy-right p{
+  font-size: 25px;
+text-align: center;
+}
+.copy-right p span{
+  font-weight: 600;
+  font-size: 26px;
+  color: rgb(173, 171, 171);
+  text-transform: uppercase;
+  cursor: pointer;
+}
