@@ -1,0 +1,32 @@
+/* Extra small custom styles for nice micro-animations and accessible focus rings */
+/* These are only small additions; most styling done with Tailwind CDN classes */
+
+/* fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 420ms ease-out both;
+}
+
+/* subtle bounce for the icon */
+@keyframes bounceTiny {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+.icon-bounce { animation: bounceTiny 2000ms ease-in-out infinite; }
+
+/* small flip effect for temperature when it changes: rotateX */
+.temperature-flip {
+  transform-origin: center;
+  transition: transform 500ms ease;
+}
+
+/* accessible focus outline for keyboard users */
+:focus {
+  outline: 3px solid rgba(99,102,241,0.16);
+  outline-offset: 2px;
+}

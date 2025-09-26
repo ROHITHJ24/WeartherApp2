@@ -1,102 +1,106 @@
-import { useState } from 'react'
-import './App.css'
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import WeatherCard from "./components/WeatherCard";
 
-import searchIcon from "./assets/search-icon.png"
-import humidityIcon from "./assets/humidity.png"
-import windIcon from "./assets/wind.png"
-import cloudyIcon from "./assets/cloudy.png"
+/**
+ * App.jsx
+ * Root application wrapper.
+ *
+ * NOTE: This app expects an OpenWeatherMap API key in environment variable:
+ * - For Vite: VITE_WEATHER_API_KEY in a .env file at project root:
+ *     VITE_WEATHER_API_KEY=your_api_key_here
+ *
+ * If you used Create React App instead, use:
+ *   REACT_APP_WEATHER_API_KEY=your_api_key_here
+ * and access it with process.env.REACT_APP_WEATHER_API_KEY.
+ *
+ * (No key is hard-coded in source.)
+ */
 
-const WeatherDetails = ({ cloudyIcon, city, temprature, country, lati, longi, humidity, wind }) => {
+export default function App() {
+  const [city, setCity] = useState("");
+  const [query, setQuery] = useState("");
+  const [units, setUnits] = useState("metric"); // "metric" = Celsius, "imperial" = Fahrenheit
+  const inputRef = useRef(null);
 
+  // when user submits (Enter or Search), we store in `query` which triggers fetch in WeatherCard
+  const handleSearch = (e) => {
+    e?.preventDefault?.();
+    if (city.trim() === "") return;
+    setQuery(city.trim());
+    // blur input for better iOS-like feel
+    inputRef.current?.blur();
+  };
+
+  // Quick keyboard handler to allow Enter
+  const onKeyDown = (e) => {
+    if (e.key === "Enter") handleSearch(e);
+  };
+
+  // A tiny accessible toggle for Celsius/Fahrenheit
+  const toggleUnits = () => setUnits((u) => (u === "metric" ? "imperial" : "metric"));
+
+  // memo placeholder for pass-through props
+  const options = useMemo(() => ({ units }), [units]);
 
   return (
-    <>
-      <div className="image">
-        <img src={cloudyIcon} alt="icon" />
-      </div>
-      <div className="temprature">{temprature} °C </div>
-      <div className="city">{city}</div>
-      <div className="country">{country}</div>
+    <div className="min-h-screen flex items-center justify-center p-6">
+      <main className="w-full max-w-lg">
+        <form
+          onSubmit={handleSearch}
+          className="mb-6 flex gap-3 items-center justify-between"
+          aria-label="Search city"
+        >
+          <label htmlFor="city-input" className="sr-only">
+            City name
+          </label>
+          <input
+            id="city-input"
+            ref={inputRef}
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            onKeyDown={onKeyDown}
+            placeholder="Enter city (e.g., London)"
+            className="flex-1 px-4 py-3 rounded-xl bg-white/60 backdrop-blur-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-300 shadow-sm text-slate-900"
+            aria-required="true"
+            aria-label="City"
+          />
 
-      <div className="cord">
-        <div>
+          <button
+            type="submit"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            aria-label="Search"
+          >
+            Search
+          </button>
 
-          <span className="latitude">Latitude</span>
-          <span>{lati}</span>
-        </div>
-        <div>
-          <span className="longitude">Longitude</span>
-          <span>{longi}</span>
-        </div>
-      </div>
-
-      <div className="data-container">
-        <div className="data-items">
-          <div className="humitity-and-wind">
-            <img src={humidityIcon} alt="Humidity" className='icon'/>
-            <div className='humidity-percent'>{humidity}%</div>
-            <div className="text">Humidity</div>
-             </div>
-          <div className="humitity-and-wind">
-            <img src={windIcon} alt="Wind" className='icon'/>
-            <div className='wind-speed'>{wind}km/h</div>
-            <div className="text">wind</div>
+          <div className="ml-2 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={toggleUnits}
+              aria-pressed={units === "metric" ? "false" : "true"}
+              className="relative inline-flex items-center px-3 py-2 rounded-full bg-white/60 backdrop-blur-sm shadow-inner focus:outline-none"
+              title="Toggle Celsius / Fahrenheit"
+            >
+              <span className="text-xs font-medium">°C</span>
+              <span
+                className={`ml-2 w-10 h-5 rounded-full p-0.5 transition-all duration-200 ${
+                  units === "metric" ? "bg-slate-200" : "bg-indigo-500"
+                }`}
+              >
+                <span
+                  className={`block w-4 h-4 rounded-full bg-white transform transition-transform duration-200 ${
+                    units === "metric" ? "translate-x-0" : "translate-x-5"
+                  }`}
+                />
+              </span>
+              <span className="ml-2 text-xs font-medium">°F</span>
+            </button>
           </div>
-        </div>
-      </div>
+        </form>
 
-
-    </>
+        {/* WeatherCard handles loading, fetch, error, and display */}
+        <WeatherCard cityQuery={query} options={options} />
+      </main>
+    </div>
   );
 }
-function App() {
-  const [temprature, setTemprature] = useState(0)
-  const [city, setCity] = useState("Chennai")
-  const [country, setCountry] = useState("IN")
-  const [lati, setLati] = useState(0)
-  const [longi, setLongi] = useState(0)
-  const [wind ,setWind] = useState(0)
-  const [humidity,setHumidity] = useState(0)
-
-
-  return (
-    <>
-      <div>
-        <div className="container">
-          <h1>WEATHER APP</h1>
-          <div className="input-container">
-            <div className='input-items'>
-
-              <input type="search"
-                placeholder='Search city...'
-                className='search-input'
-              />
-              <div className="search-icon">
-                <img src={searchIcon} alt="search" />
-
-              </div>
-            </div>
-          </div>
-          <div>
-
-            <WeatherDetails
-              cloudyIcon={cloudyIcon}
-              city={city} 
-              temprature={temprature}
-              country={country} 
-              lati={lati} 
-              longi={longi} humidity={humidity}
-              wind={wind}
-            />
-            <div className="copy-right">
-
-            <p>Designed by <a href="git"><span>Rohith</span></a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  )
-}
-
-export default App

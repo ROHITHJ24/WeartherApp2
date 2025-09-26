@@ -1,14 +1,24 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/weatherLogo.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather App 2</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>iOS-style Weather Card</title>
+
+    <!-- Tailwind CDN (for quick prototypes) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- iOS-like system font stack -->
+    <meta name="theme-color" content="#f8fafc" />
+    <style>
+      /* small global tweak for iOS-like font-smoothing */
+      body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    </style>
   </head>
-  
-  <body>
-    <div id="root"></div>
+
+  <body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 to-indigo-100">
+    <div id="root" class="w-full h-full"></div>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
