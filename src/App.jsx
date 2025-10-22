@@ -1,58 +1,66 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import WeatherCard from "./components/WeatherCard";
+import WeatherFooter from "./Components/WeatherFooter";
+import WeatherCard from "./Components/WeatherCard";
 
-/**
- * App.jsx
- * Root application wrapper.
- *
- * NOTE: This app expects an OpenWeatherMap API key in environment variable:
- * - For Vite: VITE_WEATHER_API_KEY in a .env file at project root:
- *     VITE_WEATHER_API_KEY=your_api_key_here
- *
- * If you used Create React App instead, use:
- *   REACT_APP_WEATHER_API_KEY=your_api_key_here
- * and access it with process.env.REACT_APP_WEATHER_API_KEY.
- *
- * (No key is hard-coded in source.)
- */
+const tips = [
+  "Tip: Drink water in hot weather!",
+  "Misty mornings expected this week.",
+  "Carry an umbrella if rain is forecasted!",
+  "Stay hydrated and wear sunscreen today.",
+];
 
 export default function App() {
   const [city, setCity] = useState("");
   const [query, setQuery] = useState("");
-  const [units, setUnits] = useState("metric"); // "metric" = Celsius, "imperial" = Fahrenheit
+  const [units, setUnits] = useState("metric");
   const inputRef = useRef(null);
+  const [tip, setTip] = useState(tips[0]);
 
-  // when user submits (Enter or Search), we store in `query` which triggers fetch in WeatherCard
+  useEffect(() => {
+    const randomTip = tips[Math.floor(Math.random() * tips.length)];
+    setTip(randomTip);
+  }, []);
+
   const handleSearch = (e) => {
     e?.preventDefault?.();
     if (city.trim() === "") return;
     setQuery(city.trim());
-    // blur input for better iOS-like feel
     inputRef.current?.blur();
   };
 
-  // Quick keyboard handler to allow Enter
   const onKeyDown = (e) => {
     if (e.key === "Enter") handleSearch(e);
   };
 
-  // A tiny accessible toggle for Celsius/Fahrenheit
-  const toggleUnits = () => setUnits((u) => (u === "metric" ? "imperial" : "metric"));
+  const toggleUnits = () =>
+    setUnits((u) => (u === "metric" ? "imperial" : "metric"));
 
-  // memo placeholder for pass-through props
   const options = useMemo(() => ({ units }), [units]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6">
-      <main className="w-full max-w-lg">
+    <div
+      className="min-h-screen bg-cover bg-center flex flex-col items-center justify-center px-4 sm:px-6 md:px-10 py-6"
+      style={{
+        backgroundImage: `url('https://img.freepik.com/free-vector/watercolor-blue-cotton-clouds-background_23-2149251502.jpg?semt=ais_incoming&w=740&q=80')`,
+      }}
+    >
+      {/* Title */}
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-6 text-center text-blue-700 drop-shadow-md">
+        Weather App
+      </h1>
+
+      {/* Main Container */}
+      <main className="w-full max-w-md sm:max-w-lg lg:max-w-2xl bg-white/30 backdrop-blur-md rounded-2xl p-5 sm:p-8 shadow-lg transition-all duration-300">
+        {/* Search Form */}
         <form
           onSubmit={handleSearch}
-          className="mb-6 flex gap-3 items-center justify-between"
+          className="flex flex-col sm:flex-row gap-4 sm:gap-3 items-stretch sm:items-center justify-between mb-6"
           aria-label="Search city"
         >
           <label htmlFor="city-input" className="sr-only">
             City name
           </label>
+
           <input
             id="city-input"
             ref={inputRef}
@@ -60,46 +68,54 @@ export default function App() {
             onChange={(e) => setCity(e.target.value)}
             onKeyDown={onKeyDown}
             placeholder="Enter city (e.g., London)"
-            className="flex-1 px-4 py-3 rounded-xl bg-white/60 backdrop-blur-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-300 shadow-sm text-slate-900"
+            className="flex-1 px-4 py-3 rounded-xl bg-white/60 backdrop-blur-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-300 shadow-sm text-slate-900 text-sm sm:text-base"
             aria-required="true"
             aria-label="City"
           />
 
-          <button
-            type="submit"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            aria-label="Search"
-          >
-            Search
-          </button>
+          <div className="flex items-center justify-between sm:justify-center gap-2">
+            <button
+              type="submit"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300 w-full sm:w-auto"
+              aria-label="Search"
+            >
+              Search
+            </button>
 
-          <div className="ml-2 flex items-center gap-2">
+            {/* Temperature Unit Toggle */}
             <button
               type="button"
               onClick={toggleUnits}
-              aria-pressed={units === "metric" ? "false" : "true"}
-              className="relative inline-flex items-center px-3 py-2 rounded-full bg-white/60 backdrop-blur-sm shadow-inner focus:outline-none"
+              aria-pressed={units === "imperial"}
+              className="relative inline-flex items-center px-3 py-2 rounded-full bg-white/60 backdrop-blur-sm shadow-inner focus:outline-none transition-all duration-200"
               title="Toggle Celsius / Fahrenheit"
             >
               <span className="text-xs font-medium">°C</span>
               <span
-                className={`ml-2 w-10 h-5 rounded-full p-0.5 transition-all duration-200 ${
+                className={`mx-2 w-10 h-5 rounded-full p-0.5 transition-all duration-300 ${
                   units === "metric" ? "bg-slate-200" : "bg-indigo-500"
                 }`}
               >
                 <span
-                  className={`block w-4 h-4 rounded-full bg-white transform transition-transform duration-200 ${
+                  className={`block w-4 h-4 rounded-full bg-white transform transition-transform duration-300 ${
                     units === "metric" ? "translate-x-0" : "translate-x-5"
                   }`}
                 />
               </span>
-              <span className="ml-2 text-xs font-medium">°F</span>
+              <span className="text-xs font-medium">°F</span>
             </button>
           </div>
         </form>
 
-        {/* WeatherCard handles loading, fetch, error, and display */}
-        <WeatherCard cityQuery={query} options={options} />
+        {/* Weather Card */}
+        <div className="mt-4">
+          <WeatherCard cityQuery={query} options={options} />
+        </div>
+
+        {/* Footer Tip */}
+        <div className="mt-8">
+          <WeatherFooter tip={tip} />
+        </div>
       </main>
     </div>
   );
